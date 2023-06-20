@@ -8,7 +8,7 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    examplePage: path.resolve(__dirname, 'src', 'pages', 'examplePage.js'),
+    storagePage: path.resolve(__dirname, 'src', 'pages', 'storagePage.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

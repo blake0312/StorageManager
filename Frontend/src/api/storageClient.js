@@ -9,11 +9,11 @@ import axios from 'axios'
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins
  * https://javascript.info/mixins
  */
-export default class ExampleClient extends BaseClass {
+export default class StorageClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getExample', 'createExample'];
+        const methodsToBind = ['clientLoaded', 'getItem', 'createItem'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -31,28 +31,28 @@ export default class ExampleClient extends BaseClass {
     }
 
     /**
-     * Gets the concert for the given ID.
+     * Gets the item for the given ID.
      * @param id Unique identifier for a concert
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The concert
      */
-    async getExample(id, errorCallback) {
+    async getItem(id, errorCallback) {
         try {
-            const response = await this.client.get(`/example/${id}`);
+            const response = await this.client.get(`/item/${id}`);
             return response.data;
         } catch (error) {
-            this.handleError("getExample", error, errorCallback)
+            this.handleError("getItem", error, errorCallback)
         }
     }
 
-    async createExample(name, errorCallback) {
+    async createItem(name, errorCallback) {
         try {
-            const response = await this.client.post(`example`, {
+            const response = await this.client.post(`item`, {
                 "name" : name
             });
             return response.data;
         } catch (error) {
-            this.handleError("createExample", error, errorCallback);
+            this.handleError("createItem", error, errorCallback);
         }
     }
 
