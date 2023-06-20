@@ -1,9 +1,9 @@
 package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.IntegrationTest;
-import com.kenzie.appserver.controller.model.ExampleCreateRequest;
-import com.kenzie.appserver.service.ExampleService;
-import com.kenzie.appserver.service.model.Example;
+import com.kenzie.appserver.controller.model.ItemCreateRequest;
+import com.kenzie.appserver.service.StorageService;
+import com.kenzie.appserver.service.model.Item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -23,12 +23,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @IntegrationTest
-class ExampleControllerTest {
+class ItemControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    ExampleService exampleService;
+    StorageService storageService;
 
     private final MockNeat mockNeat = MockNeat.threadLocal();
 
@@ -39,9 +39,9 @@ class ExampleControllerTest {
         String id = UUID.randomUUID().toString();
         String name = mockNeat.strings().valStr();
 
-        Example example = new Example(id, name);
-        Example persistedExample = exampleService.addNewExample(example);
-        mvc.perform(get("/example/{id}", persistedExample.getId())
+        Item item = new Item(id, name);
+        Item persistedItem = storageService.addNewItem(item);
+        mvc.perform(get("/example/{id}", persistedItem.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("id")
                         .value(is(id)))
@@ -54,15 +54,15 @@ class ExampleControllerTest {
     public void createExample_CreateSuccessful() throws Exception {
         String name = mockNeat.strings().valStr();
 
-        ExampleCreateRequest exampleCreateRequest = new ExampleCreateRequest();
-        exampleCreateRequest.setName(name);
+        ItemCreateRequest itemCreateRequest = new ItemCreateRequest();
+        itemCreateRequest.setName(name);
 
         mapper.registerModule(new JavaTimeModule());
 
         mvc.perform(post("/example")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(exampleCreateRequest)))
+                        .content(mapper.writeValueAsString(itemCreateRequest)))
                 .andExpect(jsonPath("id")
                         .exists())
                 .andExpect(jsonPath("name")
