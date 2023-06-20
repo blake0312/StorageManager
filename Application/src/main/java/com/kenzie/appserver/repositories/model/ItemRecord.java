@@ -6,8 +6,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
 
-@DynamoDBTable(tableName = "Example")
-public class ExampleRecord {
+@DynamoDBTable(tableName = "Items")
+public class ItemRecord {
 
     private String id;
     private String name;
@@ -38,8 +38,8 @@ public class ExampleRecord {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ExampleRecord exampleRecord = (ExampleRecord) o;
-        return Objects.equals(id, exampleRecord.id);
+        ItemRecord itemRecord = (ItemRecord) o;
+        return Objects.equals(id, itemRecord.id);
     }
 
     @Override
