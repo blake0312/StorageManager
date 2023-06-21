@@ -38,8 +38,16 @@ public class StorageController {
 
     @PostMapping
     public ResponseEntity<ItemResponse> addNewItem(@RequestBody ItemCreateRequest itemCreateRequest) {
-        Item item = new Item(randomUUID().toString(),
-                itemCreateRequest.getName());
+        Item item = new Item(
+                itemCreateRequest.getId(),
+                itemCreateRequest.getName(),
+                itemCreateRequest.getValue(),
+                itemCreateRequest.getStatus(),
+                itemCreateRequest.getDescription(),
+                itemCreateRequest.getQuantity(),
+                itemCreateRequest.getInStorage(),
+                itemCreateRequest.getStorageLocation());
+
         storageService.addNewItem(item);
 
         ItemResponse itemResponse = new ItemResponse();
