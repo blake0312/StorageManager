@@ -11,6 +11,12 @@ public class ItemRecord {
 
     private String id;
     private String name;
+    private Double value;
+    private String status;
+    private String description;
+    private Integer quantity;
+    private Boolean inStorage;
+    private String storageLocation;
 
     @DynamoDBHashKey(attributeName = "Id")
     public String getId() {
@@ -22,12 +28,66 @@ public class ItemRecord {
         return name;
     }
 
+    @DynamoDBAttribute(attributeName = "Value")
+    public Double getValue() {
+        return value;
+    }
+
+    @DynamoDBAttribute(attributeName = "Status")
+    public String getStatus() {
+        return status;
+    }
+
+    @DynamoDBAttribute(attributeName = "Description")
+    public String getDescription() {
+        return description;
+    }
+
+    @DynamoDBAttribute(attributeName = "Quantity")
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    @DynamoDBAttribute(attributeName = "InStorage")
+    public Boolean getInStorage() {
+        return inStorage;
+    }
+
+    @DynamoDBAttribute(attributeName = "StorageLocation")
+    public String getStorageLocation() {
+        return storageLocation;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setInStorage(Boolean inStorage) {
+        this.inStorage = inStorage;
+    }
+
+    public void setStorageLocation(String storageLocation) {
+        this.storageLocation = storageLocation;
     }
 
     @Override

@@ -17,7 +17,8 @@ public class StorageService {
     public Item findById(String id) {
         Item itemFromBackend = storageRepository
                 .findById(id)
-                .map(item -> new Item(item.getId(), item.getName()))
+                .map(item -> new Item(item.getId(), item.getName(), item.getValue(), item.getStatus(),
+                        item.getDescription(), item.getQuantity(), item.getInStorage(), item.getStorageLocation()))
                 .orElse(null);
 
         return itemFromBackend;
