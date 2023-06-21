@@ -1,0 +1,28 @@
+Resources:
+  ItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      "AttributeDefinitions":
+        - "AttributeName": "Id"
+          "AttributeType": "S"
+        - "AttributeName": "Name"
+          "AttributeType": "S"
+        - "AttributeName": "Value"
+          "AttributeType": "N"
+        - "AttributeName": "Status"
+          "AttributeType": "S"
+        - "AttributeName": "Description"
+          "AttributeType": "S"
+        - "AttributeName": "Quantity"
+          "AttributeType": "N"
+        - "AttributeName": "InStorage"
+          "AttributeType": "B"
+        - "AttributeName": "StorageLocation"
+          "AttributeType": "S"
+      "KeySchema":
+        - "AttributeName": "Id"
+          "KeyType": "HASH"
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false
+      BillingMode: PAY_PER_REQUEST
+      TableName: "Items"
