@@ -39,7 +39,7 @@ public class StorageController {
     @PostMapping
     public ResponseEntity<ItemResponse> addNewItem(@RequestBody ItemCreateRequest itemCreateRequest) {
         Item item = new Item(
-                itemCreateRequest.getId(),
+                randomUUID().toString(),
                 itemCreateRequest.getName(),
                 itemCreateRequest.getValue(),
                 itemCreateRequest.getStatus(),
