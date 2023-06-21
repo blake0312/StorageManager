@@ -11,25 +11,25 @@ public class ItemCreateRequest {
     private String name;
 
     @NotEmpty
-    @JsonProperty("Id")
+    @JsonProperty("id")
     private String id;
 
-    @JsonProperty("Value")
+    @JsonProperty("value")
     private Double value;
     @NotEmpty
-    @JsonProperty("Status")
+    @JsonProperty("status")
     private String status;
     @NotEmpty
-    @JsonProperty("Description")
+    @JsonProperty("description")
     private String description;
     @NotEmpty
-    @JsonProperty("Quantity")
+    @JsonProperty("quantity")
     private Integer quantity;
 
-    @JsonProperty("InStorage")
+    @JsonProperty("inStorage")
     private Boolean inStorage;
 
-    @JsonProperty("StorageLocation")
+    @JsonProperty("storageLocation")
     private String storageLocation;
     public String getName() {
         return name;
