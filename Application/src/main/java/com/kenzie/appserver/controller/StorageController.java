@@ -30,9 +30,8 @@ public class StorageController {
             return ResponseEntity.notFound().build();
         }
 
-        ItemResponse itemResponse = new ItemResponse();
-        itemResponse.setId(item.getId());
-        itemResponse.setName(item.getName());
+        // Using helper method
+        ItemResponse itemResponse = createItemResponse(item);
         return ResponseEntity.ok(itemResponse);
     }
 
@@ -50,10 +49,23 @@ public class StorageController {
 
         storageService.addNewItem(item);
 
-        ItemResponse itemResponse = new ItemResponse();
-        itemResponse.setId(item.getId());
-        itemResponse.setName(item.getName());
+        // Using helper method
+        ItemResponse itemResponse = createItemResponse(item);
 
         return ResponseEntity.created(URI.create("/item/" + itemResponse.getId())).body(itemResponse);
+    }
+
+    // Helper method to create Item response
+    private ItemResponse createItemResponse(Item item) {
+        ItemResponse response = new ItemResponse();
+        response.setId(item.getId());
+        response.setName(item.getName());
+        response.setValue(item.getValue());
+        response.setStatus(item.getStatus());
+        response.setDescription(item.getDescription());
+        response.setQuantity(item.getQuantity());
+        response.setInStorage(item.getInStorage());
+        response.setStorageLocation(item.getStorageLocation());
+        return response;
     }
 }
