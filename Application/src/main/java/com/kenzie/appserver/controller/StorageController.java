@@ -3,7 +3,6 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.ItemCreateRequest;
 import com.kenzie.appserver.controller.model.ItemResponse;
 import com.kenzie.appserver.service.StorageService;
-
 import com.kenzie.appserver.service.model.Item;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import static java.util.UUID.randomUUID;
 public class StorageController {
 
     private StorageService storageService;
-
     StorageController(StorageService storageService) {
         this.storageService = storageService;
     }
@@ -67,5 +65,32 @@ public class StorageController {
         response.setInStorage(item.getInStorage());
         response.setStorageLocation(item.getStorageLocation());
         return response;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemResponse> updateItem(@PathVariable String id, @RequestBody ItemCreateRequest itemCreateRequest) {
+        Item item = new Item(
+                id,
+                itemCreateRequest.getName(),
+                itemCreateRequest.getValue(),
+                itemCreateRequest.getStatus(),
+                itemCreateRequest.getDescription(),
+                itemCreateRequest.getQuantity(),
+                itemCreateRequest.getInStorage(),
+                itemCreateRequest.getStorageLocation()
+        );
+        Item updatedItem = storageService.updateItem(item);
+        if (updatedItem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ItemResponse itemResponse = createItemResponse(updatedItem);
+        return ResponseEntity.ok(itemResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable("id") String id) {
+        storageService.deleteItem(id);
+        return ResponseEntity.noContent().build();
     }
 }
