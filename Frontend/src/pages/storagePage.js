@@ -2,9 +2,6 @@ import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
 import StorageClient from "../api/storageClient";
 
-/**
- * Logic needed for the view playlist page of the website.
- */
 class StoragePage extends BaseClass {
 
     constructor() {
@@ -65,8 +62,14 @@ class StoragePage extends BaseClass {
         this.dataStore.set("item", null);
 
         let name = document.getElementById("create-name-field").value;
+        let value = document.getElementById("create-value-field").value;
+        let status = document.getElementById("create-status-field").value;
+        let description = document.getElementById("create-description-field").value;
+        let quantity = document.getElementById("create-quantity-field").value;
+        let inStorage = document.getElementById("create-inStorage-field").checkbox;
+        let storageLocation = document.getElementById("create-storageLocation-field").value;
 
-        const createdItem = await this.client.createItem(name, this.errorHandler);
+        const createdItem = await this.client.createItem(name,value,status,description,quantity,inStorage,storageLocation,  this.errorHandler);
         this.dataStore.set("item", createdItem);
 
         if (createdItem) {

@@ -25,14 +25,14 @@ module.exports = {
     //for example if you sent the request /example/bob to the backend, it will be converted into
     //http://localhost:5001/example/bob and sent to the backend that way.
     //uncomment the following proxy section to make the example work
-//    proxy: [
-//          {
-//            context: [
-//              '/example',
-//            ],
-//            target: 'http://localhost:5001'
-//          }
-//        ]
+    proxy: [
+          {
+            context: [
+              '/item',
+            ],
+            target: 'http://localhost:5001'
+          }
+        ]
   },
   plugins: [
     new HtmlWebpackPlugin({

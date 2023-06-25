@@ -2,7 +2,7 @@ import BaseClass from "../util/baseClass";
 import axios from 'axios'
 
 /**
- * Client to call the MusicPlaylistService.
+ * Client to call the StorageService.
  *
  * This could be a great place to explore Mixins. Currently the client is being loaded multiple times on each page,
  * which we could avoid using inheritance or Mixins.
@@ -45,10 +45,16 @@ export default class StorageClient extends BaseClass {
         }
     }
 
-    async createItem(name, errorCallback) {
+    async createItem(name,value,status,description, quantity, inStorage, storageLocation,  errorCallback) {
         try {
-            const response = await this.client.post(`item`, {
-                "name" : name
+            const response = await this.client.post(`/item`, {
+                "name" : name,
+                "value" : value,
+                "status" : status,
+                "description" : description,
+                "quantity" : quantity,
+                "inStorage" : inStorage,
+                "storageLocation" : storageLocation
             });
             return response.data;
         } catch (error) {
