@@ -6,7 +6,7 @@ class StoragePage extends BaseClass {
 
     constructor() {
         super();
-        this.bindClassMethods(['onGet', 'onCreate', 'renderItem'], this);
+        this.bindClassMethods(['onGet', 'onCreate', 'onRemove', 'renderItem'], this);
         this.dataStore = new DataStore();
     }
 
@@ -16,6 +16,8 @@ class StoragePage extends BaseClass {
     async mount() {
         document.getElementById('get-by-id-form').addEventListener('submit', this.onGet);
         document.getElementById('create-form').addEventListener('submit', this.onCreate);
+        document.getElementById('remove-form').addEventListener('submit', this.onRemove);
+
         this.client = new StorageClient();
 
         this.dataStore.addChangeListener(this.renderItem)
@@ -78,6 +80,20 @@ class StoragePage extends BaseClass {
             this.errorHandler("Error creating!  Try again...");
         }
     }
+
+    async onRemove(event) {
+            event.preventDefault();
+            this.dataStore.set("item", null);
+
+            let id = document.getElementById("remove-id-field").value;
+
+            const removedItem = await this.client.removeItem(id, this.errorHandler);
+            if (removedItem) {
+                this.showMessage(`Removed ${removedItem.name}!`)
+            } else {
+                this.errorHandler("Error removing!  Try again...");
+            }
+        }
 }
 
 /**
