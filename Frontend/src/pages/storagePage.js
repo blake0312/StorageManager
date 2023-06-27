@@ -82,18 +82,18 @@ class StoragePage extends BaseClass {
     }
 
     async onRemove(event) {
-            event.preventDefault();
-            this.dataStore.set("item", null);
+        event.preventDefault();
+        this.dataStore.set("item", null);
 
-            let id = document.getElementById("remove-id-field").value;
+        let id = document.getElementById("remove-id-field").value;
 
-            const removedItem = await this.client.removeItem(id, this.errorHandler);
-            if (removedItem) {
-                this.showMessage(`Removed ${removedItem.name}!`)
-            } else {
-                this.errorHandler("Error removing!  Try again...");
-            }
+        const removedItem = await this.client.removeItem(id, this.errorHandler);
+        if (removedItem) {
+            this.showMessage(`Removed ${id}!`)
+        } else {
+            this.errorHandler("Error removing!  Try again...");
         }
+    }
 }
 
 /**
