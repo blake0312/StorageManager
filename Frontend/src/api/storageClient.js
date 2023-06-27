@@ -64,10 +64,11 @@ export default class StorageClient extends BaseClass {
 
     async removeItem(id, errorCallback) {
         try {
-            const response = await this.client.delete(`/item/${id}`);
-            return response.data;
+            await this.client.delete(`/item/${id}`);
+            return true;
         } catch (error) {
             this.handleError("removeItem", error, errorCallback)
+            return false;
         }
     }
 
