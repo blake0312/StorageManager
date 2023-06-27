@@ -34,9 +34,13 @@
             <label>Quantity</label>
             <input type="number" required class="validated-field" id="create-quantity-field">
         </p>
+
         <p class="form-field">
-            <label>In Storage</label>
+        <div class="flex-field">
+        <label>In Storage?</label>
             <input type="checkbox" id="create-inStorage-field">
+        </div>
+
         </p>
         <p class="form-field">
             <label>Storage Location</label>
@@ -45,6 +49,7 @@
         <button type="submit">Create</button>
     </form>
 </div>
+
 <div class="card">
     <h2>Get By ID</h2>
     <form class="card-content" id="get-by-id-form">
@@ -55,6 +60,18 @@
         <button type="submit">Get</button>
     </form>
 </div>
+
+<div class="card">
+    <h2>Remove Item</h2>
+    <form class="card-content" id="remove-form">
+        <p class="form-field">
+            <label>ID</label>
+            <input type="text" required id="remove-id-field">
+        </p>
+        <button type="submit">Remove</button>
+    </form>
+</div>
+
 <div class="card" id="result">
     <h2>Result:</h2>
     <p id="result-info"></p>
