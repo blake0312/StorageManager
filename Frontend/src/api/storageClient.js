@@ -13,7 +13,7 @@ export default class StorageClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getItem', 'createItem'];
+        const methodsToBind = ['clientLoaded', 'getItem', 'createItem', 'removeItem'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -59,6 +59,15 @@ export default class StorageClient extends BaseClass {
             return response.data;
         } catch (error) {
             this.handleError("createItem", error, errorCallback);
+        }
+    }
+
+    async removeItem(id, errorCallback) {
+        try {
+            const response = await this.client.delete(`/item/${id}`);
+            return response.data;
+        } catch (error) {
+            this.handleError("removeItem", error, errorCallback)
         }
     }
 
