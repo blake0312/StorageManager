@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,5 +104,54 @@ public class StorageServiceTest {
 
         // THEN
         Mockito.verify(storageRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void find_All_Items_Test() {
+        // GIVEN
+        List<ItemRecord> itemRecords = new ArrayList<>();
+        ItemRecord itemRecord1 = new ItemRecord();
+        itemRecord1.setId("id1");
+        itemRecord1.setName("name1");
+        itemRecord1.setValue(1.0);
+        itemRecord1.setStatus("status1");
+        itemRecord1.setDescription("description1");
+        itemRecord1.setQuantity(1);
+        itemRecord1.setInStorage(true);
+        itemRecord1.setStorageLocation("location1");
+        itemRecords.add(itemRecord1);
+
+        ItemRecord itemRecord2 = new ItemRecord();
+        itemRecord2.setId("id2");
+        itemRecord2.setName("name2");
+        itemRecord2.setValue(2.0);
+        itemRecord2.setStatus("status2");
+        itemRecord2.setDescription("description2");
+        itemRecord2.setQuantity(2);
+        itemRecord2.setInStorage(false);
+        itemRecord2.setStorageLocation("location2");
+        itemRecords.add(itemRecord2);
+
+        Mockito.when(storageRepository.findAll()).thenReturn(itemRecords);
+
+        // WHEN
+        List<Item> items = storageService.findAllItems();
+
+        // THEN
+        assertNotNull(items);
+        assertEquals(itemRecords.size(), items.size());
+        for (int i = 0; i < itemRecords.size(); i++) {
+            ItemRecord itemRecord = itemRecords.get(i);
+            Item item = items.get(i);
+            assertEquals(itemRecord.getId(), item.getId());
+            assertEquals(itemRecord.getName(), item.getName());
+            assertEquals(itemRecord.getValue(), item.getValue());
+            assertEquals(itemRecord.getStatus(), item.getStatus());
+            assertEquals(itemRecord.getDescription(), item.getDescription());
+            assertEquals(itemRecord.getQuantity(), item.getQuantity());
+            assertEquals(itemRecord.getInStorage(), item.getInStorage());
+            assertEquals(itemRecord.getStorageLocation(), item.getStorageLocation());
+        }
+        Mockito.verify(storageRepository, times(1)).findAll();
     }
 }

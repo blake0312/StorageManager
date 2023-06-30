@@ -2,7 +2,7 @@ import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
 import StorageClient from "../api/storageClient";
 
-class StoragePage extends BaseClass {
+class ItemsPage extends BaseClass {
 
     constructor() {
         super();
@@ -56,8 +56,8 @@ class StoragePage extends BaseClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const storagePage = new StoragePage();
-    storagePage.mount();
+    const itemsPage = new ItemsPage();
+    itemsPage.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);
