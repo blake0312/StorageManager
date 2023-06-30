@@ -68,7 +68,7 @@ class StoragePage extends BaseClass {
         let status = document.getElementById("create-status-field").value;
         let description = document.getElementById("create-description-field").value;
         let quantity = document.getElementById("create-quantity-field").value;
-        let inStorage = document.getElementById("create-inStorage-field").checkbox;
+        let inStorage = document.getElementById("create-inStorage-field").checked;
         let storageLocation = document.getElementById("create-storageLocation-field").value;
 
         const createdItem = await this.client.createItem(name,value,status,description,quantity,inStorage,storageLocation,  this.errorHandler);

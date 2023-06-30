@@ -13,7 +13,7 @@ export default class StorageClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getItem', 'createItem', 'removeItem'];
+        const methodsToBind = ['clientLoaded', 'getItem', 'createItem', 'removeItem', 'getAll'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -71,7 +71,14 @@ export default class StorageClient extends BaseClass {
             return false;
         }
     }
-
+    async getAll(errorCallback){
+        try{
+           const response = await this.client.get(`/item/all`);
+           return response.data;
+        } catch (error) {
+           this.handleError("getAll", error, errorCallback)
+        }
+    }
     /**
      * Helper method to log the error and run any error functions.
      * @param error The error received from the server.
