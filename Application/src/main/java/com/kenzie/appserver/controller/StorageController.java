@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.UUID.randomUUID;
 
@@ -93,4 +96,16 @@ public class StorageController {
         storageService.deleteItem(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<ItemResponse>> getAllItems() {
+        List<Item> items = storageService.findAllItems();
+        List<ItemResponse> itemResponses = new ArrayList<>();
+        for(Item item: items) {
+            ItemResponse itemResponse = createItemResponse(item);
+            itemResponses.add(itemResponse);
+        }
+        return ResponseEntity.ok(itemResponses);
+    }
+
 }

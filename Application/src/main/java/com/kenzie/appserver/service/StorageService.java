@@ -6,6 +6,8 @@ import com.kenzie.appserver.service.model.Item;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,6 +73,16 @@ public class StorageService {
         return new Item(itemRecord.getId(), itemRecord.getName(), itemRecord.getValue(),
                 itemRecord.getStatus(), itemRecord.getDescription(), itemRecord.getQuantity(),
                 itemRecord.getInStorage(), itemRecord.getStorageLocation());
+    }
+
+
+    public List<Item> findAllItems() {
+        List<ItemRecord> itemRecords = (List<ItemRecord>) storageRepository.findAll();
+        List<Item> items = new ArrayList<>();
+        for(ItemRecord itemRecord: itemRecords) {
+            items.add(convertToItem(itemRecord));
+        }
+        return items;
     }
 
 }

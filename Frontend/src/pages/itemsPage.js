@@ -2,7 +2,7 @@ import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
 import StorageClient from "../api/storageClient";
 
-class StoragePage extends BaseClass {
+class ItemsPage extends BaseClass {
 
     constructor() {
         super();
