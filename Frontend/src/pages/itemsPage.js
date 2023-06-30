@@ -57,7 +57,7 @@ class ItemsPage extends BaseClass {
  */
 const main = async () => {
     const itemsPage = new ItemsPage();
-    storagePage.mount();
+    itemsPage.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);
