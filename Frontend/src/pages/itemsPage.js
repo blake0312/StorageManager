@@ -56,7 +56,7 @@ class ItemsPage extends BaseClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const storagePage = new StoragePage();
+    const itemsPage = new ItemsPage();
     storagePage.mount();
 };
 

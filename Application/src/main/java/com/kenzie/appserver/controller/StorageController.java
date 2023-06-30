@@ -97,7 +97,7 @@ public class StorageController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ItemResponse>> getAllItems() {
         List<Item> items = storageService.findAllItems();
         List<ItemResponse> itemResponses = new ArrayList<>();
