@@ -8,7 +8,7 @@ export default class DataStore extends BaseClass {
 
     constructor(initialState = {}) {
         super();
-        this.bindClassMethods(['getState', 'get', 'setState', 'set', 'addChangeListener'], this);
+        this.bindClassMethods(['getState', 'get', 'setState', 'set', 'addChangeListener','setItems', 'getItems'], this);
         this.state = initialState;
         this.listeners = [];
     }
@@ -52,6 +52,13 @@ export default class DataStore extends BaseClass {
         this.listeners.forEach(listener => listener());
     }
 
+    setItems(items) {
+        this.set('items', items);
+    }
+
+    getItems() {
+         return this.get('items');
+    }
     /**
      * Add a listener. Whenever the state is changed in the DataStore all of the listeners will be executed.
      */

@@ -9,6 +9,7 @@ module.exports = {
   },
   entry: {
     storagePage: path.resolve(__dirname, 'src', 'pages', 'storagePage.js'),
+    itemsPage: path.resolve(__dirname, 'src', 'pages', 'itemsPage.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -40,6 +41,11 @@ module.exports = {
       filename: 'index.html',
       inject: false
     }),
+    new HtmlWebpackPlugin({
+          template: './src/Items.html',
+          filename: 'Items.html',
+          inject: false
+        }),
     new CopyPlugin({
       patterns: [
         {
