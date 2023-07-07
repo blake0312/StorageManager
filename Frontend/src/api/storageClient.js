@@ -61,6 +61,22 @@ export default class StorageClient extends BaseClass {
             this.handleError("createItem", error, errorCallback);
         }
     }
+    async updateItem(id, name, value, status,description, quantity,  checkbox, storageLocation, errorCallback){
+        try {
+            const response = await this.client.put(`/item/${id}`,{
+                "name" : name,
+                "value" : value,
+                "status" : status,
+                "description" : description,
+                "quantity" : quantity,
+                "inStorage" : checkbox,
+                "storageLocation" : storageLocation
+            });
+            return response.data;
+        }catch (error) {
+            this.handleError("updateItem", error, errorCallback);
+        }
+    }
 
     async removeItem(id, errorCallback) {
         try {

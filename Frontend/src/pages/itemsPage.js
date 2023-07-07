@@ -3,17 +3,14 @@ import DataStore from "../util/DataStore";
 import StorageClient from "../api/storageClient";
 
 class ItemsPage extends BaseClass {
-
     constructor() {
         super();
-        this.bindClassMethods(['render'], this);
+        this.bindClassMethods(['render', 'handleToggle'], this);
         this.dataStore = new DataStore();
+        this.client = new StorageClient(); // Instantiate the StorageClient
     }
 
-
     async mount() {
-        this.client = new StorageClient();
-
         const items = await this.client.getAll();
         this.dataStore.setItems(items);
         this.render();
@@ -22,32 +19,71 @@ class ItemsPage extends BaseClass {
     // Render Methods --------------------------------------------------------------------------------------------------
 
     async render() {
-      let resultArea = document.getElementById("Items-info");
+        let resultArea = document.getElementById("Items-info");
 
-      const items = this.dataStore.getItems();
+        const items = this.dataStore.getItems();
 
-      if (items && items.length > 0) {
-        resultArea.innerHTML = items
-          .map(
-            (item) => `
-              <div>ID: ${item.id}</div>
-              <div>Name: ${item.name}</div>
-              <div>Value: $${item.value}</div>
-              <div>Status: ${item.status}</div>
-              <div>Description: ${item.description}</div>
-              <div>Quantity: ${item.quantity}</div>
-              <div>InStorage: ${item.inStorage}</div>
-              <div>StorageLocation: ${item.storageLocation}</div>
-              <hr>
-            `
-          )
-          .join("");
-      } else {
-        resultArea.innerHTML = "No Items";
-      }
+        if (items && items.length > 0) {
+            resultArea.innerHTML = items
+                .map(
+                    (item) => `
+            <div>ID: ${item.id}</div>
+            <div>Name: ${item.name}</div>
+            <div>Value: $${item.value}</div>
+            <div>Status: ${item.status}</div>
+            <div>Description: ${item.description}</div>
+            <div>Quantity: ${item.quantity}</div>
+            <div>InStorage: ${item.inStorage}</div>
+            <div>StorageLocation: ${item.storageLocation}</div>
+            <div>
+            <input type="checkbox"
+            data-id="${item.id}" 
+            data-name="${item.name}" 
+            data-value="${item.value}" 
+            data-status="${item.status}" 
+            data-description="${item.description}" 
+            data-quantity="${item.quantity}"
+            data-storageLocation="${item.storageLocation}" 
+            ${item.inStorage ? 'checked' : ''}>
+            
+            InStorage
+            </div>
+
+            <hr>
+          `
+                )
+                .join("");
+
+            const checkboxes = resultArea.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener('change', this.handleToggle.bind(this));
+            });
+        } else {
+            resultArea.innerHTML = "No Items";
+        }
     }
 
     // Event Handlers --------------------------------------------------------------------------------------------------
+
+    async handleToggle(event) {
+        const itemId = event.target.dataset.id;
+        const name = event.target.dataset.name;
+        const value = event.target.dataset.value;
+        const status = event.target.dataset.status;
+        const description = event.target.dataset.description;
+        const quantity = event.target.dataset.quantity;
+        const storageLocation = event.target.dataset.storageLocation;
+        const inStorage = event.target.checked;
+
+        try {
+            await this.client.updateItem(itemId,name,value,status,description,quantity, inStorage,storageLocation );
+            const items = await this.client.getAll();
+            this.dataStore.setItems(items);
+            this.render();
+        } catch (error) {
+            console.error("Error updating item:", error);
+        }
+    }
 
 
 }
