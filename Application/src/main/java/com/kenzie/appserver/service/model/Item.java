@@ -10,6 +10,7 @@ public class Item {
     private final Integer quantity;
     private final Boolean inStorage;
     private final String storageLocation;
+    private final Integer usageCount;
 
     public Item(String id, String name, Double value, String status, String description, Integer quantity) {
         this.id = id;
@@ -20,9 +21,10 @@ public class Item {
         this.quantity = quantity;
         this.inStorage = false;
         this.storageLocation = null;
+        this.usageCount = 0;
     }
 
-    public Item(String id, String name, Double value, String status, String description, Integer quantity, Boolean inStorage, String storageLocation) {
+    public Item(String id, String name, Double value, String status, String description, Integer quantity, Boolean inStorage, String storageLocation, Integer usageCount) {
         this.id = id;
         this.name = name;
         this.value = value;
@@ -31,6 +33,7 @@ public class Item {
         this.quantity = quantity;
         this.inStorage = inStorage;
         this.storageLocation = storageLocation;
+        this.usageCount = usageCount;
     }
 
     public String getId() {
@@ -63,5 +66,9 @@ public class Item {
 
     public String getStorageLocation() {
         return storageLocation;
+    }
+
+    public Integer getUsageCount() {
+        return usageCount;
     }
 }

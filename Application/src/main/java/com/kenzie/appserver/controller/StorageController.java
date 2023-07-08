@@ -46,7 +46,8 @@ public class StorageController {
                 itemCreateRequest.getDescription(),
                 itemCreateRequest.getQuantity(),
                 itemCreateRequest.getInStorage(),
-                itemCreateRequest.getStorageLocation());
+                itemCreateRequest.getStorageLocation(),
+                itemCreateRequest.getUsageCount());
 
         storageService.addNewItem(item);
 
@@ -67,6 +68,7 @@ public class StorageController {
         response.setQuantity(item.getQuantity());
         response.setInStorage(item.getInStorage());
         response.setStorageLocation(item.getStorageLocation());
+        response.setUsageCount(item.getUsageCount());
         return response;
     }
 
@@ -80,7 +82,8 @@ public class StorageController {
                 itemCreateRequest.getDescription(),
                 itemCreateRequest.getQuantity(),
                 itemCreateRequest.getInStorage(),
-                itemCreateRequest.getStorageLocation()
+                itemCreateRequest.getStorageLocation(),
+                itemCreateRequest.getUsageCount()
         );
         Item updatedItem = storageService.updateItem(item);
         if (updatedItem == null) {

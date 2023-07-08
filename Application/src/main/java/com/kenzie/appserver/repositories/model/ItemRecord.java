@@ -17,6 +17,7 @@ public class ItemRecord {
     private Integer quantity;
     private Boolean inStorage;
     private String storageLocation;
+    private Integer usageCount;
 
     @DynamoDBHashKey(attributeName = "Id")
     public String getId() {
@@ -58,6 +59,11 @@ public class ItemRecord {
         return storageLocation;
     }
 
+    @DynamoDBAttribute(attributeName = "UsageCount")
+    public Integer getUsageCount() {
+        return usageCount;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -88,6 +94,10 @@ public class ItemRecord {
 
     public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
+    }
+
+    public void setUsageCount(Integer usageCount) {
+        this.usageCount = usageCount;
     }
 
     @Override

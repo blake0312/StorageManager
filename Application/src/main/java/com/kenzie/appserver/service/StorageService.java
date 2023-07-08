@@ -22,7 +22,7 @@ public class StorageService {
         Item itemFromBackend = storageRepository
                 .findById(id)
                 .map(item -> new Item(item.getId(), item.getName(), item.getValue(), item.getStatus(),
-                        item.getDescription(), item.getQuantity(), item.getInStorage(), item.getStorageLocation()))
+                        item.getDescription(), item.getQuantity(), item.getInStorage(), item.getStorageLocation(), item.getUsageCount()))
                 .orElse(null);
 
         return itemFromBackend;
@@ -44,8 +44,18 @@ public class StorageService {
             itemRecord.setStatus(item.getStatus());
             itemRecord.setDescription(item.getDescription());
             itemRecord.setQuantity(item.getQuantity());
-            itemRecord.setInStorage(item.getInStorage());
+            //itemRecord.setInStorage(item.getInStorage());
             itemRecord.setStorageLocation(item.getStorageLocation());
+
+            if (itemRecord.getInStorage() != item.getInStorage()) {
+                // update count
+                itemRecord.setInStorage(item.getInStorage());
+                itemRecord.setUsageCount(item.getUsageCount() + 1);
+            }
+            else {
+                itemRecord.setInStorage(item.getInStorage());
+                itemRecord.setUsageCount(item.getUsageCount());
+            }
             storageRepository.save(itemRecord);
             return item;
         }
@@ -66,13 +76,14 @@ public class StorageService {
         itemRecord.setQuantity(item.getQuantity());
         itemRecord.setInStorage(item.getInStorage());
         itemRecord.setStorageLocation(item.getStorageLocation());
+        itemRecord.setUsageCount(item.getUsageCount());
         return itemRecord;
     }
 
     private Item convertToItem(ItemRecord itemRecord) {
         return new Item(itemRecord.getId(), itemRecord.getName(), itemRecord.getValue(),
                 itemRecord.getStatus(), itemRecord.getDescription(), itemRecord.getQuantity(),
-                itemRecord.getInStorage(), itemRecord.getStorageLocation());
+                itemRecord.getInStorage(), itemRecord.getStorageLocation(), itemRecord.getUsageCount());
     }
 
 
