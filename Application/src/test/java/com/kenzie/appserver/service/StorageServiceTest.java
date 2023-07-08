@@ -6,6 +6,7 @@ import com.kenzie.appserver.service.model.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.testcontainers.lifecycle.TestDescription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,8 @@ public class StorageServiceTest {
         int quantity = 1;
         boolean inStorage = true;
         String storageLocation = "testLocation";
-        Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation);
+        Integer usageCount = 0;
+        Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation, usageCount);
         Mockito.when(storageRepository.save(any(ItemRecord.class))).thenReturn(null);
 
         // WHEN
@@ -78,7 +80,8 @@ public class StorageServiceTest {
         int quantity = 1;
         boolean inStorage = true;
         String storageLocation = "testLocation";
-        Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation);
+        Integer usageCount = 0;
+        Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation, usageCount);
         ItemRecord record = new ItemRecord();
         record.setId(id);
         Mockito.when(storageRepository.findById(id)).thenReturn(Optional.of(record));
@@ -92,6 +95,42 @@ public class StorageServiceTest {
         assertEquals(item.getId(), updatedItem.getId());
         assertEquals(item.getName(), updatedItem.getName());
         Mockito.verify(storageRepository, times(1)).save(any(ItemRecord.class));
+    }
+
+    @Test
+    public void update_item_test_changes_count() {
+        // GIVEN
+        Item item = new Item("testId", "Updated Name", 1.0, "testStatus",
+                "TestDescription", 1, true, "testLocation", 0);
+        Item updatedItem = new Item("testId", "Updated Name", 1.0, "testStatus",
+                "TestDescription", 1, false, "testLocation", 0);
+        Item updatedItemCount = new Item("testId", "Updated Name", 1.0, "testStatus",
+                "TestDescription", 1, false, "testLocation", 1);
+        ItemRecord record = convertToItemRecord(item);
+
+        // This is the itemRecord that the repository saves after the count is changed
+        ItemRecord updatedRecordCount = convertToItemRecord(updatedItemCount);
+
+        Mockito.when(storageRepository.findById(updatedItem.getId())).thenReturn(Optional.of(record));
+
+        // WHEN
+        // The returned Item won't have an updated count, but it's fine because it's only used for an if statement.
+        Item result = storageService.updateItem(updatedItem);
+
+        // THEN
+        assertNotNull(result);
+        assertEquals(updatedItem.getId(), result.getId());
+        assertEquals(updatedItem.getName(), result.getName());
+        assertEquals(updatedItem.getValue(), result.getValue());
+        assertEquals(updatedItem.getStatus(), result.getStatus());
+        assertEquals(updatedItem.getDescription(), result.getDescription());
+        assertEquals(updatedItem.getQuantity(), result.getQuantity());
+        assertEquals(updatedItem.getInStorage(), result.getInStorage());
+        assertEquals(updatedItem.getStorageLocation(), result.getStorageLocation());
+        assertEquals(updatedItem.getUsageCount(), result.getUsageCount());
+
+        Mockito.verify(storageRepository, times(1)).save(updatedRecordCount);
+
     }
 
     @Test
@@ -119,6 +158,7 @@ public class StorageServiceTest {
         itemRecord1.setQuantity(1);
         itemRecord1.setInStorage(true);
         itemRecord1.setStorageLocation("location1");
+        itemRecord1.setUsageCount(0);
         itemRecords.add(itemRecord1);
 
         ItemRecord itemRecord2 = new ItemRecord();
@@ -130,6 +170,7 @@ public class StorageServiceTest {
         itemRecord2.setQuantity(2);
         itemRecord2.setInStorage(false);
         itemRecord2.setStorageLocation("location2");
+        itemRecord2.setUsageCount(0);
         itemRecords.add(itemRecord2);
 
         Mockito.when(storageRepository.findAll()).thenReturn(itemRecords);
@@ -151,7 +192,23 @@ public class StorageServiceTest {
             assertEquals(itemRecord.getQuantity(), item.getQuantity());
             assertEquals(itemRecord.getInStorage(), item.getInStorage());
             assertEquals(itemRecord.getStorageLocation(), item.getStorageLocation());
+            assertEquals(itemRecord.getUsageCount(), item.getUsageCount());
         }
         Mockito.verify(storageRepository, times(1)).findAll();
+    }
+
+    // helper method
+    private ItemRecord convertToItemRecord(Item item) {
+        ItemRecord itemRecord = new ItemRecord();
+        itemRecord.setId(item.getId());
+        itemRecord.setName(item.getName());
+        itemRecord.setValue(item.getValue());
+        itemRecord.setStatus(item.getStatus());
+        itemRecord.setDescription(item.getDescription());
+        itemRecord.setQuantity(item.getQuantity());
+        itemRecord.setInStorage(item.getInStorage());
+        itemRecord.setStorageLocation(item.getStorageLocation());
+        itemRecord.setUsageCount(item.getUsageCount());
+        return itemRecord;
     }
 }

@@ -30,6 +30,9 @@ public class ItemResponse {
     @JsonProperty("storageLocation")
     private String storageLocation;
 
+    @JsonProperty("usageCount")
+    private Integer usageCount;
+
     public String getId() {
         return id;
     }
@@ -92,5 +95,13 @@ public class ItemResponse {
 
     public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
+    }
+
+    public Integer getUsageCount() {
+        return usageCount;
+    }
+
+    public void setUsageCount(Integer usageCount) {
+        this.usageCount = usageCount;
     }
 }

@@ -31,6 +31,10 @@ public class ItemCreateRequest {
 
     @JsonProperty("storageLocation")
     private String storageLocation;
+
+    @JsonProperty("usageCount")
+    private Integer usageCount;
+
     public String getName() {
         return name;
     }
@@ -93,5 +97,13 @@ public class ItemCreateRequest {
 
     public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
+    }
+
+    public Integer getUsageCount() {
+        return usageCount;
+    }
+
+    public void setUsageCount(Integer usageCount) {
+        this.usageCount = usageCount;
     }
 }
