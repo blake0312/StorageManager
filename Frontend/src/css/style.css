@@ -176,20 +176,22 @@ main {
     padding: 0.4rem;
 }
 .button, button {
-    background: lightgrey;
-    padding: 3px;
-    border-radius: 3px;
-    text-decoration: none;
-    color: black;
-    border: grey;
+    background: linear-gradient(310deg, var(--color-info-dark), #dcdcdc 40%);
+    padding: 6px 16px;
+    border-radius: 15px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-dark);
+    border: none;
     cursor: pointer;
-    max-width: 60px;
-    margin: auto;
+    max-width: 100px;
+    margin: 5px auto 0;
+    transition: all 0.3s;
 }
 
 .button:hover, button:hover {
-    animation: buttonAnim 2s ease 0s 2 normal both;
-    background: #c0c0c0;
+    transform: translateY(-1px);
+    background: linear-gradient(310deg, #b0b0b0, #dcdcdc 70%);
+    color: white;
 }
 
 .form-field input[type="checkbox"] {
@@ -226,19 +228,6 @@ main {
 
     50% {
         transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-@keyframes buttonAnim {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
     }
 
     100% {
