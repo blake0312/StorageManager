@@ -74,6 +74,10 @@ public class StorageController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ItemResponse> updateItem(@PathVariable String id, @RequestBody ItemCreateRequest itemCreateRequest) {
+        // usageCount isn't a required field so if the request doesn't have it, there's a null pointer exception
+        if (itemCreateRequest.getUsageCount() == null) {
+            itemCreateRequest.setUsageCount(0);
+        }
         Item item = new Item(
                 id,
                 itemCreateRequest.getName(),

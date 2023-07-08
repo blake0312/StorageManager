@@ -44,7 +44,7 @@ public class StorageService {
             itemRecord.setStatus(item.getStatus());
             itemRecord.setDescription(item.getDescription());
             itemRecord.setQuantity(item.getQuantity());
-            //itemRecord.setInStorage(item.getInStorage());
+
             itemRecord.setStorageLocation(item.getStorageLocation());
 
             if (itemRecord.getInStorage() != item.getInStorage()) {
@@ -57,7 +57,16 @@ public class StorageService {
                 itemRecord.setUsageCount(item.getUsageCount());
             }
             storageRepository.save(itemRecord);
-            return item;
+            Item updatedItem = new Item( itemRecord.getId(),
+                    itemRecord.getName(),
+                    itemRecord.getValue(),
+                    itemRecord.getStatus(),
+                    itemRecord.getDescription(),
+                    itemRecord.getQuantity(),
+                    itemRecord.getInStorage(),
+                    itemRecord.getStorageLocation(),
+                    itemRecord.getUsageCount());
+            return updatedItem;
         }
         return null;
     }
