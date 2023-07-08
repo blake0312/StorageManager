@@ -100,10 +100,13 @@ public class StorageServiceTest {
     @Test
     public void update_item_test_changes_count() {
         // GIVEN
+        // the original item
         Item item = new Item("testId", "Updated Name", 1.0, "testStatus",
                 "TestDescription", 1, true, "testLocation", 0);
+        // the requested update
         Item updatedItem = new Item("testId", "Updated Name", 1.0, "testStatus",
                 "TestDescription", 1, false, "testLocation", 0);
+        // the final updated item
         Item updatedItemCount = new Item("testId", "Updated Name", 1.0, "testStatus",
                 "TestDescription", 1, false, "testLocation", 1);
         ItemRecord record = convertToItemRecord(item);
@@ -114,20 +117,20 @@ public class StorageServiceTest {
         Mockito.when(storageRepository.findById(updatedItem.getId())).thenReturn(Optional.of(record));
 
         // WHEN
-        // The returned Item won't have an updated count, but it's fine because it's only used for an if statement.
+        // result will have updated usageCount
         Item result = storageService.updateItem(updatedItem);
 
         // THEN
         assertNotNull(result);
-        assertEquals(updatedItem.getId(), result.getId());
-        assertEquals(updatedItem.getName(), result.getName());
-        assertEquals(updatedItem.getValue(), result.getValue());
-        assertEquals(updatedItem.getStatus(), result.getStatus());
-        assertEquals(updatedItem.getDescription(), result.getDescription());
-        assertEquals(updatedItem.getQuantity(), result.getQuantity());
-        assertEquals(updatedItem.getInStorage(), result.getInStorage());
-        assertEquals(updatedItem.getStorageLocation(), result.getStorageLocation());
-        assertEquals(updatedItem.getUsageCount(), result.getUsageCount());
+        assertEquals(updatedItemCount.getId(), result.getId());
+        assertEquals(updatedItemCount.getName(), result.getName());
+        assertEquals(updatedItemCount.getValue(), result.getValue());
+        assertEquals(updatedItemCount.getStatus(), result.getStatus());
+        assertEquals(updatedItemCount.getDescription(), result.getDescription());
+        assertEquals(updatedItemCount.getQuantity(), result.getQuantity());
+        assertEquals(updatedItemCount.getInStorage(), result.getInStorage());
+        assertEquals(updatedItemCount.getStorageLocation(), result.getStorageLocation());
+        assertEquals(updatedItemCount.getUsageCount(), result.getUsageCount());
 
         Mockito.verify(storageRepository, times(1)).save(updatedRecordCount);
 
