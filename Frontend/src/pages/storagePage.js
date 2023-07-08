@@ -6,7 +6,7 @@ class StoragePage extends BaseClass {
 
     constructor() {
         super();
-        this.bindClassMethods(['onGet', 'onCreate', 'onRemove', 'renderItem'], this);
+        this.bindClassMethods(['onCreate', 'onRemove'], this);
         this.dataStore = new DataStore();
     }
 
@@ -14,31 +14,15 @@ class StoragePage extends BaseClass {
      * Once the page has loaded, set up the event handlers and fetch the concert list.
      */
     async mount() {
-        document.getElementById('get-by-id-form').addEventListener('submit', this.onGet);
         document.getElementById('create-form').addEventListener('submit', this.onCreate);
         document.getElementById('remove-form').addEventListener('submit', this.onRemove);
 
         this.client = new StorageClient();
 
-        this.dataStore.addChangeListener(this.renderItem)
     }
 
     // Render Methods --------------------------------------------------------------------------------------------------
 
-    async renderItem() {
-        let resultArea = document.getElementById("result-info");
-
-        const item = this.dataStore.get("item");
-
-        if (item) {
-            resultArea.innerHTML = `
-                <div>ID: ${item.id}</div>
-                <div>Name: ${item.name}</div>
-            `
-        } else {
-            resultArea.innerHTML = "No Item";
-        }
-    }
 
     // Event Handlers --------------------------------------------------------------------------------------------------
 

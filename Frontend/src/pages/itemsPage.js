@@ -27,7 +27,8 @@ class ItemsPage extends BaseClass {
             resultArea.innerHTML = items
                 .map(
                     (item) => `
-            <div>ID: ${item.id}</div>
+            <div class = "card">
+            <div id = "ID">ID: ${item.id}</div>
             <div>Name: ${item.name}</div>
             <div>Value: $${item.value}</div>
             <div>Status: ${item.status}</div>
@@ -48,8 +49,8 @@ class ItemsPage extends BaseClass {
             
             InStorage
             </div>
-
-            <hr>
+            </div>
+            
           `
                 )
                 .join("");
@@ -72,11 +73,11 @@ class ItemsPage extends BaseClass {
         const status = event.target.dataset.status;
         const description = event.target.dataset.description;
         const quantity = event.target.dataset.quantity;
-        const storageLocation = event.target.dataset.storageLocation;
+        const storageLocation = event.target.dataset.storagelocation;
         const inStorage = event.target.checked;
 
         try {
-            await this.client.updateItem(itemId,name,value,status,description,quantity, inStorage,storageLocation );
+            await this.client.updateItem(itemId,name,value,status,description,quantity, inStorage,storageLocation, this.errorHandler);
             const items = await this.client.getAll();
             this.dataStore.setItems(items);
             this.render();
