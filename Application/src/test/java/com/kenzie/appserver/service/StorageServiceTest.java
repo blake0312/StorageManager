@@ -6,16 +6,16 @@ import com.kenzie.appserver.service.model.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.testcontainers.lifecycle.TestDescription;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 public class StorageServiceTest {
 
@@ -34,7 +34,7 @@ public class StorageServiceTest {
         String id = "testId";
         ItemRecord record = new ItemRecord();
         record.setId(id);
-        Mockito.when(storageRepository.findById(id)).thenReturn(Optional.of(record));
+        when(storageRepository.findById(id)).thenReturn(Optional.of(record));
 
         // WHEN
         Item item = storageService.findById(id);
@@ -58,7 +58,7 @@ public class StorageServiceTest {
         String storageLocation = "testLocation";
         Integer usageCount = 0;
         Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation, usageCount);
-        Mockito.when(storageRepository.save(any(ItemRecord.class))).thenReturn(null);
+        when(storageRepository.save(any(ItemRecord.class))).thenReturn(null);
 
         // WHEN
         Item addedItem = storageService.addNewItem(item);
@@ -84,8 +84,8 @@ public class StorageServiceTest {
         Item item = new Item(id, name, value, status, description, quantity, inStorage, storageLocation, usageCount);
         ItemRecord record = new ItemRecord();
         record.setId(id);
-        Mockito.when(storageRepository.findById(id)).thenReturn(Optional.of(record));
-        Mockito.when(storageRepository.save(any(ItemRecord.class))).thenReturn(record);
+        when(storageRepository.findById(id)).thenReturn(Optional.of(record));
+        when(storageRepository.save(any(ItemRecord.class))).thenReturn(record);
 
         // WHEN
         Item updatedItem = storageService.updateItem(item);
@@ -114,7 +114,7 @@ public class StorageServiceTest {
         // This is the itemRecord that the repository saves after the count is changed
         ItemRecord updatedRecordCount = convertToItemRecord(updatedItemCount);
 
-        Mockito.when(storageRepository.findById(updatedItem.getId())).thenReturn(Optional.of(record));
+        when(storageRepository.findById(updatedItem.getId())).thenReturn(Optional.of(record));
 
         // WHEN
         // result will have updated usageCount
@@ -176,7 +176,7 @@ public class StorageServiceTest {
         itemRecord2.setUsageCount(0);
         itemRecords.add(itemRecord2);
 
-        Mockito.when(storageRepository.findAll()).thenReturn(itemRecords);
+        when(storageRepository.findAll()).thenReturn(itemRecords);
 
         // WHEN
         List<Item> items = storageService.findAllItems();
@@ -213,5 +213,94 @@ public class StorageServiceTest {
         itemRecord.setStorageLocation(item.getStorageLocation());
         itemRecord.setUsageCount(item.getUsageCount());
         return itemRecord;
+    }
+
+    @Test
+    void updateItemTest_ItemExists_InStorageStatusUnchanged() {
+        // Given
+        Item item = new Item("1", "item1", 10.5, "active", "This is item1",
+                5, true, "A1", 2);
+        ItemRecord record = new ItemRecord();
+        record.setId("1");
+        when(storageRepository.findById("1")).thenReturn(Optional.of(record));
+        when(storageRepository.save(any(ItemRecord.class))).thenReturn(record);
+
+        // When
+        Item updatedItem = storageService.updateItem(item);
+
+        // Then
+        assertNotNull(updatedItem);
+        assertEquals(record.getId(), updatedItem.getId());
+        assertEquals(record.getName(), updatedItem.getName());
+        assertEquals(record.getValue(), updatedItem.getValue());
+        assertEquals(record.getStatus(), updatedItem.getStatus());
+        assertEquals(record.getDescription(), updatedItem.getDescription());
+        assertEquals(record.getQuantity(), updatedItem.getQuantity());
+        assertEquals(record.getInStorage(), updatedItem.getInStorage());
+        assertEquals(record.getStorageLocation(), updatedItem.getStorageLocation());
+        assertEquals(record.getUsageCount(), updatedItem.getUsageCount());
+    }
+
+    @Test
+    void updateItemTest_ItemDoesNotExist() {
+        // Given
+        Item item = new Item("2", "item2", 20.5, "inactive", "This is item2",
+                10, true, "A2", 2);
+        when(storageRepository.findById("2")).thenReturn(Optional.empty());
+
+        // When
+        Item updatedItem = storageService.updateItem(item);
+
+        // Then
+        assertNull(updatedItem);
+    }
+
+    @Test
+    public void testUpdateItem() {
+        String itemId = "12345";
+        ItemRecord itemRecord = new ItemRecord();
+        itemRecord.setId(itemId);
+        itemRecord.setUsageCount(3);
+        itemRecord.setInStorage(true);
+
+        Item item = new Item(itemId, "name", 123.0, "status", "description", 2, false, "location", 3);
+
+        when(storageRepository.findById(itemId)).thenReturn(Optional.of(itemRecord));
+        when(storageRepository.save(any(ItemRecord.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Item updatedItem = storageService.updateItem(item);
+
+        assertNotNull(updatedItem);
+        assertEquals(4, updatedItem.getUsageCount());
+        assertFalse(updatedItem.getInStorage());
+    }
+
+    @Test
+    public void deleteItem_Nonexistent_Test() {
+        // GIVEN
+        String id = "nonexistentId";
+        doThrow(EmptyResultDataAccessException.class).when(storageRepository).deleteById(id);
+
+        // THEN
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            // WHEN
+            storageService.deleteItem(id);
+        });
+        Mockito.verify(storageRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void findAllItems_EmptyList_Test() {
+        // GIVEN
+        List<ItemRecord> itemRecords = new ArrayList<>();
+        when(storageRepository.findAll()).thenReturn(itemRecords);
+
+        // WHEN
+        List<Item> items = storageService.findAllItems();
+
+        //THEN
+        assertNotNull(items);
+        assertTrue(items.isEmpty());
+        Mockito.verify(storageRepository, times(1)).findAll();
     }
 }
