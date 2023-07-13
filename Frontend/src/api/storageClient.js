@@ -54,14 +54,15 @@ export default class StorageClient extends BaseClass {
                 "description" : description,
                 "quantity" : quantity,
                 "inStorage" : inStorage,
-                "storageLocation" : storageLocation
+                "storageLocation" : storageLocation,
+                "usageCount" : 0
             });
             return response.data;
         } catch (error) {
             this.handleError("createItem", error, errorCallback);
         }
     }
-    async updateItem(id, name, value, status,description, quantity,  checkbox, storageLocation, errorCallback){
+    async updateItem(id, name, value, status,description, quantity,  checkbox, storageLocation, usageCount, errorCallback){
         try {
             const response = await this.client.put(`/item/${id}`,{
                 "name" : name,
@@ -70,7 +71,8 @@ export default class StorageClient extends BaseClass {
                 "description" : description,
                 "quantity" : quantity,
                 "inStorage" : checkbox,
-                "storageLocation" : storageLocation
+                "storageLocation" : storageLocation,
+                "usageCount" : usageCount
             });
             return response.data;
         }catch (error) {
