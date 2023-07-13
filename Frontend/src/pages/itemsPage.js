@@ -36,6 +36,7 @@ class ItemsPage extends BaseClass {
             <div>Quantity: ${item.quantity}</div>
             <div>InStorage: ${item.inStorage}</div>
             <div>StorageLocation: ${item.storageLocation}</div>
+            <div>UsageCount: ${item.usageCount}</div>
             <div>
             <input type="checkbox"
             data-id="${item.id}" 
@@ -44,7 +45,8 @@ class ItemsPage extends BaseClass {
             data-status="${item.status}" 
             data-description="${item.description}" 
             data-quantity="${item.quantity}"
-            data-storageLocation="${item.storageLocation}" 
+            data-storageLocation="${item.storageLocation}"
+            data-usageCount="${item.usageCount}"
             ${item.inStorage ? 'checked' : ''}>
             
             InStorage
@@ -74,10 +76,11 @@ class ItemsPage extends BaseClass {
         const description = event.target.dataset.description;
         const quantity = event.target.dataset.quantity;
         const storageLocation = event.target.dataset.storagelocation;
+        const usageCount = event.target.dataset.usagecount;
         const inStorage = event.target.checked;
 
         try {
-            await this.client.updateItem(itemId,name,value,status,description,quantity, inStorage,storageLocation, this.errorHandler);
+            await this.client.updateItem(itemId,name,value,status,description,quantity,inStorage,storageLocation,usageCount, this.errorHandler);
             const items = await this.client.getAll();
             this.dataStore.setItems(items);
             this.render();
