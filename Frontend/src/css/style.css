@@ -202,16 +202,18 @@ main {
 }
 
 #Items-info {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    max-width: 850px;
     margin-top: 20px;
+    justify-content: center;
+}
+#Items-info .card {
+    background: #faf9f6;
 }
 #ID{
     user-select: text;
 }
-
 
 @media (max-width: 767px) {
     .forms-container {
@@ -220,7 +222,6 @@ main {
         margin-bottom: 1rem;
     }
 }
-
 @keyframes barAnim {
     0% {
         transform: scale(1);
