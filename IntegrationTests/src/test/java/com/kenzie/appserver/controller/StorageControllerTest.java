@@ -109,6 +109,52 @@ class StorageControllerTest {
     }
 
     @Test
+    public void updateItem_ExistingItemChangesInStorage_UpdateSuccessfulAndCountChange() throws Exception {
+        String id = UUID.randomUUID().toString();
+
+        //Add item to make sure it exist before updating
+        Item item = new Item(id, "name",10.0,"status","description",
+                1, true, "location", 0);
+        storageService.addNewItem(item);
+
+        //Create the ItemCreateRequest with updated data
+        String updatedName = "Updated Item Name";
+        String updatedStatus = "Updated Item Status";
+        String updatedDescription = "Updated Item Description";
+        ItemCreateRequest itemCreateRequest = new ItemCreateRequest();
+        itemCreateRequest.setId(id);
+        itemCreateRequest.setName(updatedName);
+        itemCreateRequest.setStatus(updatedStatus);
+        itemCreateRequest.setDescription(updatedDescription);
+        itemCreateRequest.setQuantity(2);
+        itemCreateRequest.setValue(20.0);
+        itemCreateRequest.setInStorage(false);
+        itemCreateRequest.setStorageLocation(null);
+        itemCreateRequest.setUsageCount(0);
+
+        mvc.perform(put("/item/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(itemCreateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(is(id)))
+                .andExpect(jsonPath("name")
+                        .value(is(updatedName)))
+                .andExpect(jsonPath("status")
+                        .value(is(updatedStatus)))
+                .andExpect(jsonPath("description")
+                        .value(is(updatedDescription)))
+                .andExpect(jsonPath("value")
+                        .value(is(20.0)))
+                .andExpect(jsonPath("quantity")
+                        .value(is(2)))
+                .andExpect(jsonPath("inStorage")
+                        .value(is(false)))
+                .andExpect(jsonPath("usageCount")
+                        .value(is(1)));
+    }
+
+    @Test
     public void updateItem_InvalidItem_UpdateFail() throws Exception {
         //Item does not exist yet, Service will return null, Controller then returns notfound 4xx error.
         String name = mockNeat.strings().valStr();
