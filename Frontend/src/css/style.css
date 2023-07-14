@@ -240,11 +240,10 @@ main {
     user-select: text;
 }
 
-@media (max-width: 767px) {
-    .forms-container {
-        display: block;
-        margin-top: 8rem;
-        margin-bottom: 1rem;
+
+@media (max-height: 820px) {
+    .center-container{
+        margin-top: 5rem;
     }
 }
 @keyframes barAnim {
