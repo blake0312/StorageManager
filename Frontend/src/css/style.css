@@ -32,7 +32,7 @@ html{
 }
 
 body{
-    background: linear-gradient(310deg, #83aede 4%, #fff 76%);
+    background: #2c2c2c;
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
@@ -48,11 +48,13 @@ a{
 
 
 h1{
+    color: #f27f0c;
     font-weight: 800;
     font-size: 2.5rem;
 }
 
 h2{
+    color: #f27f0c;
     text-align: center;
     font-weight: 600;
     font-size: 1.4rem;
@@ -126,17 +128,38 @@ main {
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.forms-container {
-    display: flex;
+.center-container{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 10px;
+}
+.forms-container {
+    display: flex;
     background-color: white;
+    border-radius: 2px;
     justify-content: space-between;
 }
+.forms-container::before,
+.forms-container::after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    top: -10px;
+    left: -10px;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #f27f0c, #ffa219, #ff820c, #ffe0b3,
+    #ffa20c, #ff820c, #f27f0c, #ffa20c, #ff820c,
+    #ffb74d, #ffe0b3, #ff820c, #f27f0c);
+    background-size: 300%;
+    animation: border 12s linear infinite;
+}
 
+.forms-container::after {
+    filter: blur(50px);
+}
 .validated-field {
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -176,7 +199,7 @@ main {
     padding: 0.4rem;
 }
 .button, button {
-    background: linear-gradient(310deg, var(--color-info-dark), #dcdcdc 40%);
+    background: linear-gradient(310deg, #ffd699, #e7e7e7 60%);
     padding: 6px 16px;
     border-radius: 15px;
     font-family: 'Poppins', sans-serif;
@@ -210,6 +233,8 @@ main {
 }
 #Items-info .card {
     background: #faf9f6;
+    padding: 6px 16px;
+    border-radius: 10px;
 }
 #ID{
     user-select: text;
@@ -233,5 +258,15 @@ main {
 
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes border {
+    0%, 100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 300%;
     }
 }
