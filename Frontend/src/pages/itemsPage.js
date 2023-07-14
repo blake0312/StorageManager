@@ -34,9 +34,9 @@ class ItemsPage extends BaseClass {
             <div>Status: ${item.status}</div>
             <div>Description: ${item.description}</div>
             <div>Quantity: ${item.quantity}</div>
-            <div>InStorage: ${item.inStorage}</div>
-            <div>StorageLocation: ${item.storageLocation}</div>
-            <div>UsageCount: ${item.usageCount}</div>
+            <div>In Storage: ${item.inStorage}</div>
+            <div>Storage Location: ${item.storageLocation}</div>
+            <div>Usage Count: ${item.usageCount}</div>
             <div>
             <input type="checkbox"
             data-id="${item.id}" 
@@ -49,7 +49,7 @@ class ItemsPage extends BaseClass {
             data-usageCount="${item.usageCount}"
             ${item.inStorage ? 'checked' : ''}>
             
-            InStorage
+            In Storage
             </div>
             </div>
             
