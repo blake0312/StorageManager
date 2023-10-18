@@ -12,7 +12,7 @@ module.exports = {
     itemsPage: path.resolve(__dirname, 'src', 'pages', 'itemsPage.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public'),
     filename: '[name].js',
   },
   devServer: {
@@ -50,7 +50,7 @@ module.exports = {
       patterns: [
         {
           from: path.resolve('src/css'),
-          to: path.resolve("dist/css")
+          to: path.resolve("public/css")
         }
       ]
     }),
