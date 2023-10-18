@@ -50,7 +50,7 @@ module.exports = {
       patterns: [
         {
           from: path.resolve('src/css'),
-          to: path.resolve("dist/css")
+          to: path.resolve("public/css")
         }
       ]
     }),
