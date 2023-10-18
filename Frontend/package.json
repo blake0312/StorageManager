@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "webpack --mode production --env production --devtool=source-map --output public",
+    "build": "webpack --mode production --env production --devtool=source-map",
     "start": "webpack-dev-server --devtool=eval-source-map --mode=development --env=development --hot",
     "clean": "rm -rf dist"
   },
